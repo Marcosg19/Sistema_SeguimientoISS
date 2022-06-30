@@ -1,0 +1,39 @@
+Hay actualmente 10 astronautas en la ISS: 
+
+Oleg Artemyev - a bordo
+Denis Matveev - a bordo
+Sergey Korsakov - a bordo
+Kjell Lindgren - a bordo
+Bob Hines - a bordo
+Samantha Cristoforetti - a bordo
+Jessica Watkins - a bordo
+Cai Xuzhe - a bordo
+Chen Dong - a bordo
+Liu Yang - a bordo
+
+Tu latitud/longitud actual es: [14.6328, -90.5199]
+
+
+Predicciones de paso de ISS
+
+{'message': 'success', 'request': {'altitude': 100, 'datetime': 1656615323, 'latitude': 14.6328, 'longitude': -90.5199, 'passes': 10}, 'response': [{'duration': 645, 'risetime': 1656654317}, {'duration': 419, 'risetime': 1656660243}, {'duration': 627, 'risetime': 1656689905}, {'duration': 513, 'risetime': 1656695752}, {'duration': 613, 'risetime': 1656737846}, {'duration': 542, 'risetime': 1656743682}, {'duration': 567, 'risetime': 1656773441}, {'duration': 603, 'risetime': 1656779221}, {'duration': 536, 'risetime': 1656821398}, {'duration': 611, 'risetime': 1656827152}]}
+
+30-06-2022 23:45:17
+
+01-07-2022 01:24:03
+
+01-07-2022 09:38:25
+
+01-07-2022 11:15:52
+
+01-07-2022 22:57:26
+
+02-07-2022 00:34:42
+
+02-07-2022 08:50:41
+
+02-07-2022 10:27:01
+
+02-07-2022 22:09:58
+
+02-07-2022 23:45:52
