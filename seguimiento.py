@@ -61,7 +61,7 @@ def isstiemporeal():
         return float((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
 
     def servoAngle(angulo):
-        angulo=_map(angulo,0,180,0.7,2.2)
+        angulo=_map(angulo,0,180,0.7,2.4)
         #print(angulo)
         servo.duty_cycle = servo_duty_cycle(angulo)
         time.sleep(1)
@@ -174,8 +174,8 @@ def isstiemporeal():
                     home = ephem.Observer()
                     home.lon = '-90.5199'   # +E
                     home.lat = '14.6328'      # +N
-                    #home.lon = '133'   # +E
-                    #home.lat = '-53'      # +N               
+                    #home.lon = '-56'   # +E
+                    #home.lat = '52'      # +N               
                     home.elevation = 1489 # metros
                     iss1 = ephem.readtle('ISS',
                         '1 25544U 98067A   22181.49799769  .00007852  00000-0  14655-3 0  9990',
@@ -237,7 +237,7 @@ def isstiemporeal():
                     Elevacion= float(Elevacion)
                     Azimut = float(Azimut)
 
-                    if Elevacion >5 and Elevacion<70:
+                    if Elevacion >5 :
 
                         setInclinacion=Elevacion
                         setAzimut=Azimut
@@ -249,13 +249,14 @@ def isstiemporeal():
 
                     print(setInclinacion,"    ", setAzimut)
 
-                    inclinacion=gy511.gy511_inclinacion(accel.acceleration[0],accel.acceleration[2])
+                    
                     azimut= gy511.gy511_azimut(mag.magnetic[1],mag.magnetic[0])
-                    inclinacion= _map(inclinacion,0,360,360,0)
+                    
                     errorAzimut=int(azimut-setAzimut)
 
-
-                
+                    inclinacion=gy511.gy511_inclinacion(accel.acceleration[0],accel.acceleration[2])
+                    inclinacion= _map(inclinacion,0,360,360,0)
+                    errorInclinacion=int(inclinacion-setInclinacion)
 
                     if setInclinacion != MsetInclinacion:
                         MsetInclinacion = setInclinacion
@@ -269,7 +270,7 @@ def isstiemporeal():
                         # else:
                         #     i=0
                     
-                    errorInclinacion=int(inclinacion-setInclinacion)
+                    
                     #print("incli= ",inclinacion," error= ",errorInclinacion, "   valor= ",i)
 
                     ################################
@@ -285,20 +286,24 @@ def isstiemporeal():
                         #animabrujula.animaBrujula(int(azimut))
                         ##############################################
                         errorAzimut=int(azimut-setAzimut)
-                        velocidad=_map(abs(errorAzimut),0,360,0.5,0.01)
-                        if errorAzimut>2 and errorAzimut<177:
+                        error1 = abs(errorAzimut)
+                        if error1>180:
+                            error1=360-error1
+
+                        velocidad=_map(error1,0,180,0.4,0.01)
+
+
+                        #velocidad=_map(abs(errorAzimut),0,360,0.5,0.01)
+                        if errorAzimut>2 and errorAzimut<=180:
                             motorPasos(1,antihorario,velocidad) #antihorario
-                        
-
-                        if errorAzimut>180 and errorAzimut<355:
+                    
+                        if errorAzimut>180 and errorAzimut<=360 :
                             motorPasos(1,horario,velocidad)
-                            
-
-                        if errorAzimut<-2 and errorAzimut>-177:
+                    
+                        if errorAzimut<-2 and errorAzimut>=-180:
                             motorPasos(1,horario,velocidad)
-                            #print("aqui3")
-
-                        if errorAzimut<-180 and errorAzimut>-355:
+                            #print("aqui3
+                        if errorAzimut<-180 and errorAzimut>=-360:
                             motorPasos(1,antihorario,velocidad)
 
     #############################end mecanismos
@@ -385,8 +390,8 @@ def isstiemporeal():
                     home = ephem.Observer()
                     home.lon = '-90.5199'   # +E
                     home.lat = '14.6328'      # +N
-                    #home.lon = '-149'   # +E
-                    #home.lat = '-25'      # +N               
+                    #home.lon = '-45'   # +E
+                    #home.lat = '50'      # +N               
                     home.elevation = 1489 # meters
                     iss1 = ephem.readtle('ISS',
                         '1 25544U 98067A   22181.49799769  .00007852  00000-0  14655-3 0  9990',

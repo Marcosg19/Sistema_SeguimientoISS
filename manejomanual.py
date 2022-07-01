@@ -15,6 +15,7 @@ import adafruit_lsm303_accel
 import adafruit_lsm303dlh_mag
 #libreria que calcula la inclinacion y el azimut
 import gy511
+import random
 
 def manual():
     def Compass():
@@ -134,7 +135,7 @@ def manual():
         return float((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
 
     def servoAngle(angulo):
-        angulo=_map(angulo,0,180,0.7,2.2)
+        angulo=_map(angulo,0,180,0.7,2.4)
         #print(angulo)
         servo.duty_cycle = servo_duty_cycle(angulo)
         time.sleep(1)
@@ -186,11 +187,20 @@ def manual():
 
     while True:
         
-        time.sleep(0.4)
+        #time.sleep(0.4)
 
         Azimut=int(input("Introduzca el grado de azimut (entre 0 a 360): "))
         Elevacion=int(input("Introduzca el grado de elevacion (entre 0 a 180): "))
         
+
+
+                
+
+            
+
+
+            
+
     ######################mecanismos#################################
     ##############################################
 
@@ -199,42 +209,24 @@ def manual():
         #if Elevacion >5 and Elevacion<70:
         setInclinacion=Elevacion
         setAzimut=Azimut
-        #else:
-            #setInclinacion=0
-            #setAzimut
-        #print(setInclinacion,"    ", setAzimut)
+
+ 
+
+
         
         azimut= gy511.gy511_azimut(mag.magnetic[1],mag.magnetic[0])
         errorAzimut=int(azimut-setAzimut)
         compasspointer.settiltangle(-int(azimut)+90)
 
-        # inclinacion=gy511.gy511_inclinacion(accel.acceleration[0],accel.acceleration[2])
-        # inclinacion= _map(inclinacion,0,360,360,0)
-        # elevacion=inclinacion
-        # errorInclinacion=int(inclinacion-setInclinacion)
-        
-                    #print(azimut)
-        # elevpointer.settiltangle(int(elevacion))
-
-
-        # if setInclinacion != MsetInclinacion:
-        #     MsetInclinacion = setInclinacion
-        #     if errorInclinacion<-2:
-        #         servoAngle(setInclinacion)
-        #         #i=i+1
-        
-        #     elif errorInclinacion>2:
-        #         servoAngle(setInclinacion)
-        #         #i=i-1
-        #     # else:
-        #     #     i=0
+ 
         
         
         #print("incli= ",inclinacion," error= ",errorInclinacion, "   valor= ",
         ################################
         #print("inclinacion = ",inclinacion,"azimut = ", azimut,"errorAzimut= ",errorAzimut)
         ############control del estepper#################
-        while errorAzimut>1 or errorAzimut<-1:
+        while errorAzimut>2 or errorAzimut<-2:
+            #print(errorAzimut)
             #azimut= gy511.gy511_azimut(mag.magnetic[1],mag.magnetic[0])
             
             ##############activa la brujula#################
@@ -251,17 +243,23 @@ def manual():
         
             ##############################################
             #errorAzimut=int(azimut-setAzimut)
-            velocidad=_map(abs(errorAzimut),0,360,0.5,0.01)
-            if errorAzimut>2 and errorAzimut<177:
+            error1 = abs(errorAzimut)
+            if error1>180:
+                error1=360-error1
+
+            velocidad=_map(error1,0,180,0.4,0.01)
+
+
+            if errorAzimut>2 and errorAzimut<=180:
                 motorPasos(1,antihorario,velocidad) #antihorario
         
-            if errorAzimut>180 and errorAzimut<355:
+            if errorAzimut>180 and errorAzimut<=360 :
                 motorPasos(1,horario,velocidad)
         
-            if errorAzimut<-2 and errorAzimut>-177:
+            if errorAzimut<-2 and errorAzimut>=-180:
                 motorPasos(1,horario,velocidad)
                 #print("aqui3
-            if errorAzimut<-180 and errorAzimut>-355:
+            if errorAzimut<-180 and errorAzimut>=-360:
                 motorPasos(1,antihorario,velocidad)
 
 
@@ -272,8 +270,8 @@ def manual():
 
 
         elevpointer.settiltangle(int(elevacion))
-
-
+        print(setInclinacion)
+        servoAngle(setInclinacion)
         if setInclinacion != MsetInclinacion:
             MsetInclinacion = setInclinacion
             if errorInclinacion<-2:
@@ -293,5 +291,7 @@ def manual():
 
 
         elevpointer.settiltangle(int(elevacion))
+        input("Enter para continuar")
+        servoAngle(0)
 
     #############################end mecanismos   

@@ -58,7 +58,6 @@ def mapa():
             iss = turtle.Turtle()
             iss.hideturtle()
 
-
             menu = True
             while menu:
                 mapa = screen.numinput("Elegir mapa", "Elegir número de mapa:\n 1) Mapa 1\n 2) Mapa 2\n 3) Salir")
